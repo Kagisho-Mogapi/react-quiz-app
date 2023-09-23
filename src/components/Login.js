@@ -2,6 +2,8 @@ import { Box, Button, Card, CardContent, TextField, Typography } from '@mui/mate
 import React, { useState } from 'react'
 import Center from './Center'
 import useForm from '../hooks/UseForm'
+import { createAPIEndpoint } from '../api'
+import UseStateContext from '../hooks/UseStateContext'
 
 const initFieldValues= ()=>({
     name: '',
@@ -9,6 +11,8 @@ const initFieldValues= ()=>({
 })
 
 export default function Login() {
+
+    const {context, setContext} = UseStateContext()
 
     const {
         values,
@@ -31,7 +35,13 @@ export default function Login() {
     const login = e =>{
         e.preventDefault();
         if(validate())
-            console.log(values)
+            createAPIEndpoint('participant')
+                .create(values)
+                .then(res => {
+                    setContext({id:res.data.id})
+                    console.log(context)
+                })
+                .catch(err => console.log(err))
     }
 
   return (
