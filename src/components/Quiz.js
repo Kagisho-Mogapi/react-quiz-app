@@ -5,7 +5,7 @@ export default function Question() {
 
     const {context, setContext} = UseStateContext()
 
-
+    console.log(context)
   return (
     <div>Question</div>
   )

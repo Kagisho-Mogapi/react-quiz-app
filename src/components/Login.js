@@ -4,6 +4,7 @@ import Center from './Center'
 import useForm from '../hooks/UseForm'
 import { createAPIEndpoint } from '../api'
 import UseStateContext from '../hooks/UseStateContext'
+import { useNavigate } from 'react-router-dom'
 
 const initFieldValues= ()=>({
     name: '',
@@ -13,6 +14,8 @@ const initFieldValues= ()=>({
 export default function Login() {
 
     const {context, setContext} = UseStateContext()
+
+    const navigate = useNavigate()
 
     const {
         values,
@@ -39,7 +42,7 @@ export default function Login() {
                 .create(values)
                 .then(res => {
                     setContext({id:res.data.id})
-                    console.log(context)
+                    navigate('/quiz')
                 })
                 .catch(err => console.log(err))
     }
