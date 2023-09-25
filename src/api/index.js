@@ -2,6 +2,11 @@ import axios from "axios";
 
 export const BASE_URL = 'http://localhost:5078/'
 
+export const ENDPOINTS={
+    participant: 'participant',
+    question: 'question'
+}
+
 export const createAPIEndpoint = endpoint =>{
     let url = BASE_URL + 'api/'+endpoint+'/';
 
