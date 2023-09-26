@@ -9,6 +9,9 @@ import { ContextProvider } from './hooks/UseStateContext';
 const darkTheme = createTheme({
   palette:{
     mode: 'dark'
+  },
+  typography:{
+    fontFamily: 'Questrial'
   }
 })
 

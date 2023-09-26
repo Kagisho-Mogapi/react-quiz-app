@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import UseStateContext from '../hooks/UseStateContext'
-import { ENDPOINTS, createAPIEndpoint } from '../api'
-import { Box, Card, CardContent, CardHeader, LinearProgress, List, ListItemButton, Typography } from '@mui/material'
+import { BASE_URL, ENDPOINTS, createAPIEndpoint } from '../api'
+import { Box, Card, CardContent, CardHeader, CardMedia, LinearProgress, List, ListItemButton, Typography } from '@mui/material'
 import { getFormatedTime } from '../helper'
 import Center from './Center'
 
@@ -11,6 +11,7 @@ export default function Question() {
     const [qns, setQns] = useState([])
     const [qnIndex, setQnIndex] = useState(0)
     const [timeTaken, setTimeTaken] = useState(0)
+    const {context, setContext} = UseStateContext()
 
     let timer;
 
@@ -21,6 +22,10 @@ export default function Question() {
     }
 
     useEffect(()=>{
+      setContext({
+        timeTaken:0,
+        selectedOptions:[]
+      })
       createAPIEndpoint(ENDPOINTS.question)
       .fetchAll()
       .then(res =>{
@@ -32,6 +37,19 @@ export default function Question() {
       return ()=>{clearInterval(timer)}
     },[])
     
+    const updateAnswer=(qnId, optionIndex)=>{
+      const temp = [...context.selectedOptions]
+      temp.push({qnId, selected: optionIndex})
+
+
+      if(qnIndex<4){
+        setContext({selectedOptions:[...temp]})
+        setQnIndex(qnIndex+1)
+      }
+      else{
+        setContext({selectedOptions:[...temp], timeTaken})
+      }
+    }
 
   return (
     qns.length != 0
@@ -44,13 +62,17 @@ export default function Question() {
       <Box>
         <LinearProgress variant='determinate' value={(qnIndex+1)*100/5} />
       </Box>
+      {qns[qnIndex].imageName != null
+      ?<CardMedia component='img' image={BASE_URL+'images/'+qns[qnIndex].imageName}
+          sx={{width:'auto', m:'10px auto'}}/>
+      :null}
       <CardContent>
         <Typography variant='h6'>
           {qns[qnIndex].qnInWords}
         </Typography>
         <List>
           {qns[qnIndex].options.map((item, index)=>
-            <ListItemButton key={index} disableripple='true' >
+            <ListItemButton key={index} onClick={()=>updateAnswer(qns[qnIndex].id, index)} >
               <div><b>{String.fromCharCode(65+index)}) {item}</b></div>
             </ListItemButton>
           )}

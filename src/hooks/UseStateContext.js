@@ -4,7 +4,7 @@ const stateContext = createContext();
 
 const getInitContext = () =>{
 
-    if(localStorage.getItem('context')==null)
+    if(localStorage.getItem('context')===null)
         localStorage.setItem('context', JSON.stringify({
         id: 0,
         timeTaken: 0,
@@ -17,7 +17,11 @@ const getInitContext = () =>{
 export default function UseStateContext(){
     const {context, setContext} = useContext(stateContext)
     return {context,
-        setContext: obj => {setContext({...context, ...obj})}
+        setContext: obj => {setContext({...context, ...obj})},
+        resetContext: ()=>{
+            localStorage.removeItem('context')
+            setContext(getInitContext())
+        }
     };
 }  
 
