@@ -3,7 +3,7 @@ import UseStateContext from '../hooks/UseStateContext'
 import { BASE_URL, ENDPOINTS, createAPIEndpoint } from '../api'
 import { Box, Card, CardContent, CardHeader, CardMedia, LinearProgress, List, ListItemButton, Typography } from '@mui/material'
 import { getFormatedTime } from '../helper'
-import Center from './Center'
+import { useNavigate } from 'react-router-dom'
 
 export default function Question() {
 
@@ -12,6 +12,7 @@ export default function Question() {
     const [qnIndex, setQnIndex] = useState(0)
     const [timeTaken, setTimeTaken] = useState(0)
     const {context, setContext} = UseStateContext()
+    const navigate = useNavigate()
 
     let timer;
 
@@ -48,6 +49,7 @@ export default function Question() {
       }
       else{
         setContext({selectedOptions:[...temp], timeTaken})
+        navigate('/result')
       }
     }
 
