@@ -5,6 +5,7 @@ import { Box, Card, CardContent, Button, CardMedia, Alert, Typography } from '@m
 import { getFormatedTime } from '../helper'
 import { useNavigate } from 'react-router-dom'
 import { green } from '@mui/material/colors'
+import Answer from './Answer'
 
 
 export default function Result() {
@@ -23,7 +24,7 @@ export default function Result() {
         ...x,
         ...(res.data.find(y=>y.qnId == x.qnId))
       }))
-      setQnAnswers()
+      setQnAnswers(qna)
       calScore(qna)
     })
     .catch(err=>console.log(err))
@@ -110,7 +111,7 @@ export default function Result() {
           image="./result.png"
         />
       </Card>
-      
+      <Answer qnAnswers={qnAnswers}/>
     </>
   )
 }
